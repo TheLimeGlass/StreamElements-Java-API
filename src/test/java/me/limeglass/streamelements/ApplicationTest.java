@@ -26,7 +26,7 @@ public class ApplicationTest {
 				.withToken(config.getString("client.token"))
 				.withConnectionTimeout(10000)
 				.build();
-		ActivitiesTest.execute(instance);
+		PointsTest.execute(instance);
 	}
 
 	public static StreamElements getStreamElements() {

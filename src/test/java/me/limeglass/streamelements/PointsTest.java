@@ -3,7 +3,7 @@ package me.limeglass.streamelements;
 import me.limeglass.streamelements.api.StreamElements;
 import me.limeglass.streamelements.api.objects.Points;
 
-public class ActivitiesTest {
+public class PointsTest {
 
 	public static void execute(StreamElements instance) {
 		Points points = instance.getUserPoints("limeglass");
