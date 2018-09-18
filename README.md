@@ -39,3 +39,5 @@ dependencies {
 }
 ```
 Check the link above for SBT and leiningen support.
+
+Examples: https://github.com/TheLimeGlass/StreamElements-Java-API/tree/master/src/test/java/me/limeglass/streamelements
