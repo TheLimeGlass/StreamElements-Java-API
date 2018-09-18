@@ -1,67 +1,32 @@
 package me.limeglass.streamelements.internals.responses;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
+import me.limeglass.streamelements.api.objects.Activity;
 import me.limeglass.streamelements.internals.ElementsResponse;
 
 public class ActivitiesResponse extends ElementsResponse {
-
-	private final String type, provider, providerID, createdAt;
-	private final Number channel;
 	
-	public ActivitiesResponse(Number channel, String type, String provider, String providerID, String createdAt) {
-		this.providerID = providerID;
-		this.createdAt = createdAt;
-		this.provider = provider;
-		this.channel = channel;
-		this.type = type;
+	private final List<Activity> activities = new ArrayList<Activity>();
+	
+	public ActivitiesResponse(Activity... activities) {
+		this.activities.addAll(Lists.newArrayList(activities));
 	}
 	
 	/**
-	 * @return The providers ID of the Activity.
+	 * @return The activities for the request.
 	 */
-	public String getProviderID() {
-		return providerID;
+	public List<Activity> getActivities() {
+		return activities;
 	}
 	
-	/**
-	 * @return The time at which the Activity was created.
-	 */
-	public String getCreatedAt() {
-		return createdAt;
-	}
-	
-	/**
-	 * @return The providers name of the Activity.
-	 */
-	public String getProvider() {
-		return provider;
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		activities.forEach(activity -> builder.append(activity.toString()));
+		return builder.toString();
 	}
 
-	/**
-	 * @return The channel ID of the Activity.
-	 */
-	public Number getChannel() {
-		return channel;
-	}
-
-	/*
-	-------------------------------------
-	  	Type		|		Provider
-	--------------------------------------
-		follow				Twitch
-		 tip			Twitch & Youtube
-		 host				Twitch
-	   subscriber		Twitch & YouTube
-		cheer				Twitch
-	   redemption			Twitch
-		sponsor				YouTube
-	   superchat			YouTube
-	*/
-	/**
-	 * 
-	 * @return The channel ID of the Activity.
-	 */
-	public String getType() {
-		return type;
-	}
-	
 }

@@ -15,4 +15,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'StreamElements Java API'
+rootProject.name = 'StreamElements-Java-API'

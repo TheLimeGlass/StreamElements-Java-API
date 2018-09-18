@@ -32,5 +32,13 @@ public class ElementsOptional<T> {
 	public boolean isPresent() {
 		return optional.isPresent();
 	}
+	
+	public boolean hasError() {
+		return exception != null;
+	}
+	
+	public T get() {
+		return optional.get();
+	}
 
 }

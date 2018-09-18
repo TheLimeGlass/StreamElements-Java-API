@@ -1,5 +1,6 @@
 package me.limeglass.streamelements.internals;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.List;
@@ -15,21 +16,23 @@ import com.google.gson.stream.JsonReader;
 
 public abstract class ElementsReaderHandler {
 
-	@SuppressWarnings("rawtypes")
-	protected static Map<Class<? extends ElementsReader>, ElementsReader> readers = new HashMap<Class<? extends ElementsReader>, ElementsReader>();
+	protected static Map<ElementsReader<?>, Class<ElementsResponse>> readers = new HashMap<ElementsReader<?>, Class<ElementsResponse>>();
 	
 	/**
 	 * Registers an ElementsReader to read a JsonReader and format it into a response.
 	 * 
 	 * @param reader The class of the ElementsReader.
 	 */	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected static <T extends ElementsReader> void registerReader(Class<? extends ElementsReader> clazz) {
-		Class<T> reader = (Class<T>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
-		if (!readers.containsKey(clazz))
+		Class<ElementsResponse> response = (Class<ElementsResponse>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
+		if (readers.keySet().parallelStream().allMatch(reader -> !reader.getClass().equals(clazz))) {
 			try {
-				readers.put(clazz, reader.newInstance());
-			} catch (InstantiationException | IllegalAccessException e) {}
+				readers.put(clazz.newInstance(), response);
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -42,7 +45,6 @@ public abstract class ElementsReaderHandler {
 		@SuppressWarnings("rawtypes")
 		Set<Class<? extends ElementsReader>> classes = reflections.getSubTypesOf(ElementsReader.class);
 		classes.forEach(reader -> registerReader(reader));
-		//Reflection.initialize(classes.toArray(new Class[classes.size()]));
 	}
 	
 	/**
@@ -52,10 +54,11 @@ public abstract class ElementsReaderHandler {
 	 * 
 	 * @return Any ElementReaders that return with the offering predicted ElementsResponse.
 	 */
-	public static <T extends ElementsResponse> List<ElementsReader<T>> findPredicted(Class<T> predicted) {
+	@SuppressWarnings("unchecked")
+	public static <T extends ElementsResponse> List<ElementsReader<T>> findPredicted(Class<T> response) {
 		return readers.entrySet().stream()
-				.filter(predict -> predict.getKey().equals(predicted))
-				.map(predict -> predict.getValue())
+				.filter(predict -> predict.getValue().equals(response))
+				.map(predict -> (ElementsReader<T>) predict.getKey())
 				.collect(Collectors.toList());
 	}
 	
@@ -66,12 +69,17 @@ public abstract class ElementsReaderHandler {
 	 * @param predicted The predicted ElementsResponse return.
 	 * 
 	 * @return Any ElementReaders that return with the offering predicted ElementsResponse.
+	 * @throws IOException 
 	 */
-	public static <T extends ElementsResponse> List<ElementsOptional<T>> readPredicted(JsonReader reader, Class<T> predicted) {
-		return readers.entrySet().stream()
-				.filter(predict -> predict.getKey().equals(predicted))
-				.map(predict -> predict.getValue().read(reader))
+	public static <T extends ElementsResponse> List<ElementsOptional<T>> readPredicted(JsonReader reader, Class<T> response) throws IOException {
+		List<ElementsOptional<T>> stream = findPredicted(response).stream()
+				.map(predict -> (ElementsOptional<T>) predict.read(reader))
 				.collect(Collectors.toList());
+		for (ElementsOptional<T> optional : stream) {
+			if (optional.hasError())
+				throw optional.getException();
+		}
+		return stream;
 	}
 	
 	/**
@@ -81,27 +89,23 @@ public abstract class ElementsReaderHandler {
 	 * @param predicted The predicted ElementsResponse return.
 	 * 
 	 * @return Any ElementReaders that return with the offering class ElementsResponse. As a stream, the mapped return is the ElementsResponse.
+	 * @throws IOException 
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends ElementsResponse> Stream<ElementsOptional<T>> streamPredicted(JsonReader reader, Class<T> predicted) {
-		return readers.entrySet().stream()
-				.filter(predict -> predict.getKey().equals(predicted))
-				.map(predict -> predict.getValue().read(reader));
+	public static <T extends ElementsResponse> Stream<ElementsOptional<T>> streamPredicted(JsonReader reader, Class<T> predicted) throws IOException {
+		return readPredicted(reader, predicted).stream();
 	}
 	
 	/**
 	 * @return Returns all the classes of the ElementsReader currently registered.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static Set<Class<? extends ElementsReader>> getReaderClasses() {
+	public static Set<ElementsReader<?>> getReaders() {
 		return readers.keySet();
 	}
 	
 	/**
 	 * @return Returns the entry set of the registered readers.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static Set<Entry<Class<? extends ElementsReader>, ElementsReader>> getEntryReaders() {
+	public static Set<Entry<ElementsReader<?>, Class<ElementsResponse>>> getEntryReaders() {
 		return readers.entrySet();
 	}
 

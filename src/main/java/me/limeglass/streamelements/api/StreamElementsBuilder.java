@@ -5,8 +5,16 @@ import me.limeglass.streamelements.internals.objects.StreamElementsException;
 
 public final class StreamElementsBuilder {
 
-	private final String token, accountID;
+	private String token, accountID;
 	private int timeout = 20 * 1000;
+	
+	/**
+	 * For those whom love keeping clean methods per line.
+	 * 
+	 * This requires that you set the account ID and token within the method though.
+	 * The building process will error when finishing if these values are not set.
+	 */
+	public StreamElementsBuilder() {}
 	
 	/**
 	 * The StreamElementsBuilder Constructor
@@ -25,6 +33,22 @@ public final class StreamElementsBuilder {
 	 */
 	public StreamElementsBuilder withConnectionTimeout(int timeout) {
 		this.timeout = timeout;
+		return this;
+	}
+	
+	/**
+	 * Set the account ID of the StreamElementsBuilder.
+	 */
+	public StreamElementsBuilder withAccountID(String accountID) {
+		this.accountID = accountID;
+		return this;
+	}
+	
+	/**
+	 * Set the token of the StreamElementsBuilder.
+	 */
+	public StreamElementsBuilder withToken(String token) {
+		this.token = token;
 		return this;
 	}
 

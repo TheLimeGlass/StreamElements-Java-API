@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 
 import com.google.gson.stream.JsonReader;
 
+import me.limeglass.streamelements.api.StreamElements;
+
 public class ElementsRequest {
 
 	/**
@@ -35,10 +37,11 @@ public class ElementsRequest {
 	 * @param url The formatted URL to request to.
 	 * @return The predicted response.
 	 */
-	public static <T extends ElementsResponse> List<ElementsOptional<T>> makeRequest(int timeout, Class<T> predicted, HttpMethod method, String url) throws IOException {
+	public static <T extends ElementsResponse> List<ElementsOptional<T>> makeRequest(StreamElements instance, Class<T> predicted, HttpMethod method, String url) throws IOException {
 		URL request = new URL(url);
 		HttpURLConnection connection = (HttpURLConnection) request.openConnection();
-		connection.setConnectTimeout(timeout);
+		connection.setRequestProperty("Authorization", "Bearer " + instance.getToken());
+		connection.setConnectTimeout(instance.getTimeout());
 		connection.setRequestMethod(method.name());
 		InputStream input = connection.getInputStream();
 		JsonReader reader = new JsonReader(new InputStreamReader(input, "UTF-8"));
@@ -60,12 +63,15 @@ public class ElementsRequest {
 	 * @param url The formatted URL to request to.
 	 * @return The predicted response.
 	 */
-	public static <T extends ElementsResponse> Stream<ElementsOptional<T>> streamRequest(int timeout, Class<T> predicted, HttpMethod method, String url) throws IOException {
+	public static <T extends ElementsResponse> Stream<ElementsOptional<T>> streamRequest(StreamElements instance, Class<T> predicted, HttpMethod method, String url) throws IOException {
 		URL request = new URL(url);
 		HttpURLConnection connection = (HttpURLConnection) request.openConnection();
-		connection.setConnectTimeout(timeout);
+		connection.setRequestProperty("Authorization", "Bearer " + instance.getToken());
+		connection.setConnectTimeout(instance.getTimeout());
 		connection.setRequestMethod(method.name());
 		InputStream input = connection.getInputStream();
+		//String result = CharStreams.toString(new InputStreamReader(input, Charsets.UTF_8));
+		//System.out.println(result);
 		JsonReader reader = new JsonReader(new InputStreamReader(input, "UTF-8"));
 		try {
 			return ElementsReaderHandler.streamPredicted(reader, predicted);
