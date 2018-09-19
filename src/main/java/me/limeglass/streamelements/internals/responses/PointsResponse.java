@@ -1,11 +1,11 @@
 package me.limeglass.streamelements.internals.responses;
 
 import me.limeglass.streamelements.api.objects.Points;
-import me.limeglass.streamelements.internals.ElementsResponse;
+import me.limeglass.streamelements.internals.handlers.ElementsResponse;
 
 public class PointsResponse extends ElementsResponse {
 	
-	private final Points points;
+	protected final Points points;
 	
 	public PointsResponse(Points points) {
 		this.points = points;
@@ -20,6 +20,20 @@ public class PointsResponse extends ElementsResponse {
 	
 	public String toString() {
 		return points.toString();
+	}
+	
+	public class PointsUpdateResponse extends PointsResponse {
+		
+		public PointsUpdateResponse(Points points) {
+			super(points);
+		}
+		
+		//Add return statements.
+		
+		public String toString() {
+			return points.toString();
+		}
+
 	}
 
 }

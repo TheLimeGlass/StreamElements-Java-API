@@ -1,12 +1,14 @@
 package me.limeglass.streamelements.internals.readers;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Optional;
 
 import com.google.gson.stream.JsonReader;
 import me.limeglass.streamelements.api.objects.User;
 import me.limeglass.streamelements.internals.ElementsOptional;
-import me.limeglass.streamelements.internals.ElementsReader;
+import me.limeglass.streamelements.internals.handlers.ElementsReader;
+import me.limeglass.streamelements.internals.handlers.ElementsRequest.HttpMethod;
 import me.limeglass.streamelements.internals.objects.PointsImp;
 import me.limeglass.streamelements.internals.objects.UserImp;
 import me.limeglass.streamelements.internals.responses.PointsResponse;
@@ -66,6 +68,29 @@ public class PointsReader extends ElementsReader<PointsResponse> {
 		PointsResponse response = new PointsResponse(points);
 		Optional<PointsResponse> optional = Optional.of(response);
 		return new ElementsOptional<PointsResponse>(optional);
+	}
+	
+	@Override
+	protected boolean acceptMethod(HttpMethod method) {
+		return method == HttpMethod.PUT || method == HttpMethod.DELETE;
+	}
+	
+	@Override
+	protected ElementsOptional<PointsResponse> update(HttpMethod method, String url, OutputStreamWriter output) {
+		if (method == HttpMethod.PUT) {
+			String string = url.substring(url.lastIndexOf("/") + 1, url.length());
+			int points = Integer.parseInt(string);
+			try {
+				//Isn't updating
+				//TODO Work on getting a JsonReader here, to read feedback.
+				output.write(points);
+				output.flush();
+			} catch (IOException e) {
+				return new ElementsOptional<PointsResponse>(e);
+			}
+		}
+		//TODO HttpMethod DELETE
+		return new ElementsOptional<PointsResponse>();
 	}
 
 }

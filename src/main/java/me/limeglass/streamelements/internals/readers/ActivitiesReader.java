@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.google.gson.stream.JsonReader;
 import me.limeglass.streamelements.internals.ElementsOptional;
-import me.limeglass.streamelements.internals.ElementsReader;
+import me.limeglass.streamelements.internals.handlers.ElementsReader;
 import me.limeglass.streamelements.internals.objects.ActivityImp;
 import me.limeglass.streamelements.internals.responses.ActivitiesResponse;
 

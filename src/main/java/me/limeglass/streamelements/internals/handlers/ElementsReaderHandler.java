@@ -1,4 +1,4 @@
-package me.limeglass.streamelements.internals;
+package me.limeglass.streamelements.internals.handlers;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 import org.reflections.Reflections;
 
 import com.google.gson.stream.JsonReader;
+
+import me.limeglass.streamelements.internals.ElementsOptional;
 
 public abstract class ElementsReaderHandler {
 

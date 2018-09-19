@@ -8,13 +8,17 @@ public class ElementsOptional<T> {
 	private final Optional<T> optional;
 	private IOException exception;
 	
-	public ElementsOptional(IOException exception) {
+	public ElementsOptional() {
 		this.optional = Optional.empty();
-		this.exception = exception;
 	}
 	
 	public ElementsOptional(Optional<T> optional) {
 		this.optional = optional;
+	}
+	
+	public ElementsOptional(IOException exception) {
+		this.optional = Optional.empty();
+		this.exception = exception;
 	}
 
 	public void setException(IOException exception) {

@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import me.limeglass.streamelements.api.objects.Activity;
-import me.limeglass.streamelements.internals.ElementsResponse;
+import me.limeglass.streamelements.internals.handlers.ElementsResponse;
 
 public class ActivitiesResponse extends ElementsResponse {
 	

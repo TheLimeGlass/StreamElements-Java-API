@@ -30,16 +30,31 @@ public interface StreamElements {
 	List<Activity> getActivities();
 	
 	/**
+	 * @param users Collection of Users to get points from.
 	 * @return Multiple points of users.
 	 */
 	List<Points> getUserPoints(Collection<User> users);
 	
 	/**
+	 * @param username The username to set points of.
+	 * @param points The amount of current points to set.
+	 */
+	void setCurrentUserPoints(String username, long points);
+	
+	/**
+	 * @param user The User to set points of.
+	 * @param points The amount of current points to set.
+	 */
+	void setCurrentUserPoints(User user, long points);
+	
+	/**
+	 * @param username The username to get points from.
 	 * @return The points of a user by string username.
 	 */
 	Points getUserPoints(String username);
 	
 	/**
+	 * @param user The User to get points from.
 	 * @return The points of a user.
 	 */
 	Points getUserPoints(User user);

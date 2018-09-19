@@ -9,9 +9,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import me.limeglass.streamelements.api.StreamElements;
 import me.limeglass.streamelements.api.StreamElementsBuilder;
 
-public class ApplicationTest {
-
-	//Example usage
+public class MainExample {
 	
 	private static PropertiesConfiguration config;
 	private static StreamElements instance;
@@ -21,12 +19,16 @@ public class ApplicationTest {
 			config = new Configurations().properties(new File("config.properties"));
 		}
 		catch (ConfigurationException exception) {}
+		
+		//alternative constructor if you please.
+		//instance = new StreamElementsBuilder(config.getString("client.account"), config.getString("client.token")).build();
 		instance = new StreamElementsBuilder()
 				.withAccountID(config.getString("client.account"))
 				.withToken(config.getString("client.token"))
 				.withConnectionTimeout(10000)
 				.build();
-		PointsTest.execute(instance);
+		
+		PointsExample.execute(instance);
 	}
 
 	public static StreamElements getStreamElements() {

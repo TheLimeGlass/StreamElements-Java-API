@@ -1,6 +1,5 @@
 package me.limeglass.streamelements.internals;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +8,9 @@ import me.limeglass.streamelements.api.StreamElements;
 import me.limeglass.streamelements.api.objects.Activity;
 import me.limeglass.streamelements.api.objects.Points;
 import me.limeglass.streamelements.api.objects.User;
-import me.limeglass.streamelements.internals.ElementsRequest.HttpMethod;
+import me.limeglass.streamelements.internals.handlers.ElementsReaderHandler;
+import me.limeglass.streamelements.internals.handlers.ElementsRequest;
+import me.limeglass.streamelements.internals.handlers.ElementsRequest.HttpMethod;
 import me.limeglass.streamelements.internals.responses.ActivitiesResponse;
 import me.limeglass.streamelements.internals.responses.PointsResponse;
 
@@ -60,11 +61,8 @@ public class StreamElementsClient implements StreamElements {
 	 */
 	@Override
 	public List<Activity> getActivities() {
-		try {
-			ElementsRequest.streamRequest(this, ActivitiesResponse.class, HttpMethod.GET, ElementsEndpoints.ACTIVITIES + account);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//TODO
+		ElementsRequest.streamRequest(this, ActivitiesResponse.class, HttpMethod.GET, ElementsEndpoints.ACTIVITIES + account);
 		return null;
 	}
 
@@ -79,16 +77,21 @@ public class StreamElementsClient implements StreamElements {
 	}
 
 	@Override
-	public Points getUserPoints(String user) {
-		try {
-			return ElementsRequest.streamRequest(this, PointsResponse.class, HttpMethod.GET, ElementsEndpoints.POINTS + account + "/" + user)
-					.filter(optional -> optional.isPresent())
-					.map(optional -> optional.get().getPoints())
-					.findFirst().get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public Points getUserPoints(String username) {
+		return ElementsRequest.streamRequest(this, PointsResponse.class, HttpMethod.GET, ElementsEndpoints.POINTS + account + "/" + username)
+				.filter(optional -> optional.isPresent())
+				.map(optional -> optional.get().getPoints())
+				.findFirst().get();
+	}
+
+	@Override
+	public void setCurrentUserPoints(String username, long points) {
+		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.PUT, ElementsEndpoints.POINTS + account + "/" + username + "/" + points);
+	}
+
+	@Override
+	public void setCurrentUserPoints(User user, long points) {
+		setCurrentUserPoints(user.getName(), points);
 	}
 
 }
