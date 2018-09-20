@@ -71,11 +71,13 @@ public class ElementsRequest {
 		try {
 			HttpURLConnection connection = getConnection(instance, method, url);
 			if (method != HttpMethod.GET) {
-				OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+				OutputStreamWriter output = new OutputStreamWriter(connection.getOutputStream());
 				try {
-					return ElementsUploader.handle(method, url, out, predicted);
+					return ElementsUploader.handle(method, url, output, predicted);
 				} finally {
-					out.close();
+					output.close();
+					//TODO Handle this with the error messages.
+					connection.getResponseCode();
 				}
 			} else {
 				InputStream input = connection.getInputStream();

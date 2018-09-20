@@ -29,6 +29,7 @@ public abstract class ElementsReader<T extends ElementsResponse> {
 	
 	/**
 	 * Triggers the execute method of the reader, after checking if the acceptMethod method returned true.
+	 * If you write to the OutputStreamWriter make sure you flush, gross.
 	 */
 	protected ElementsOptional<T> update(HttpMethod method, String url, OutputStreamWriter output) {
 		return new ElementsOptional<T>();

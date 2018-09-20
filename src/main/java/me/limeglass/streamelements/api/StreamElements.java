@@ -36,16 +36,44 @@ public interface StreamElements {
 	List<Points> getUserPoints(Collection<User> users);
 	
 	/**
+	 * May only be a positive number.
+	 * 
 	 * @param username The username to set points of.
 	 * @param points The amount of current points to set.
 	 */
 	void setCurrentUserPoints(String username, long points);
 	
 	/**
+	 * May only be a positive number.
+	 * 
 	 * @param user The User to set points of.
 	 * @param points The amount of current points to set.
 	 */
 	void setCurrentUserPoints(User user, long points);
+	
+	/**
+	 * @param user The username to set points of.
+	 * @param points The amount of current points to subtract.
+	 */
+	void subtractPoints(String username, long points);
+	
+	/**
+	 * @param user The User to set points of.
+	 * @param points The amount of current points to subtract.
+	 */
+	void subtractPoints(User user, long points);
+	
+	/**
+	 * @param user The username to set points of.
+	 * @param points The amount of current points to add.
+	 */
+	void addPoints(String username, long points);
+	
+	/**
+	 * @param user The User to set points of.
+	 * @param points The amount of current points to add.
+	 */
+	void addPoints(User user, long points);
 	
 	/**
 	 * @param username The username to get points from.

@@ -77,12 +77,11 @@ public class PointsReader extends ElementsReader<PointsResponse> {
 	
 	@Override
 	protected ElementsOptional<PointsResponse> update(HttpMethod method, String url, OutputStreamWriter output) {
+		//TODO Work on getting a JsonReader here, to read feedback.
 		if (method == HttpMethod.PUT) {
 			String string = url.substring(url.lastIndexOf("/") + 1, url.length());
 			int points = Integer.parseInt(string);
 			try {
-				//Isn't updating
-				//TODO Work on getting a JsonReader here, to read feedback.
 				output.write(points);
 				output.flush();
 			} catch (IOException e) {

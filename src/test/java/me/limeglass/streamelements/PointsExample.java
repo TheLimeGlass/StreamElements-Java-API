@@ -16,8 +16,8 @@ public class PointsExample {
 				+ " with " + points.getCurrentPoints() + " points! PogChamp");
 		
 		//Add one point to the user.
-		instance.setCurrentUserPoints(points.getUser(), points.getCurrentPoints() + 1);
-		//Doesn't update properly.
+		instance.setCurrentUserPoints(points.getUser(), 1500);
+		points = instance.getUserPoints("limeglass");
 		System.out.println(points.getUser().getName() + " now has " + points.getCurrentPoints() + " points!");
 	}
 	

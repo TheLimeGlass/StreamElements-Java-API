@@ -86,12 +86,35 @@ public class StreamElementsClient implements StreamElements {
 
 	@Override
 	public void setCurrentUserPoints(String username, long points) {
-		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.PUT, ElementsEndpoints.POINTS + account + "/" + username + "/" + points);
+		if (points < 0) return; //TODO throw custom exception?
+		long current = getUserPoints(username).getCurrentPoints();
+		String update = "/" + (current >= points ? "-" + (current - points) : points - current);
+		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.PUT, ElementsEndpoints.POINTS + account + "/" + username + update);
 	}
 
 	@Override
 	public void setCurrentUserPoints(User user, long points) {
 		setCurrentUserPoints(user.getName(), points);
+	}
+
+	@Override
+	public void subtractPoints(String username, long points) {
+		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.PUT, ElementsEndpoints.POINTS + account + "/" + username + "/-" + Math.abs(points));
+	}
+
+	@Override
+	public void subtractPoints(User user, long points) {
+		subtractPoints(user.getName(), points);
+	}
+
+	@Override
+	public void addPoints(String username, long points) {
+		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.PUT, ElementsEndpoints.POINTS + account + "/" + username + "/" + Math.abs(points));
+	}
+
+	@Override
+	public void addPoints(User user, long points) {
+		addPoints(user.getName(), points);
 	}
 
 }
