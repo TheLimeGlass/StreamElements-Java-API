@@ -15,7 +15,7 @@ public class PointsExample {
 				+ " is #" + points.getRank() + " in the leaderboard"
 				+ " with " + points.getCurrentPoints() + " points! PogChamp");
 		
-		//Add one point to the user.
+		//Set points of the user.
 		instance.setCurrentUserPoints(points.getUser(), 1500);
 		points = instance.getUserPoints("limeglass");
 		System.out.println(points.getUser().getName() + " now has " + points.getCurrentPoints() + " points!");

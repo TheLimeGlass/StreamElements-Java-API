@@ -72,7 +72,6 @@ public abstract class ElementsReaderHandler {
 	 * 
 	 * @return Any ElementReaders that return with the offering predicted ElementsResponse.
 	 * @throws IOException 
-	 * @throws Exception 
 	 */
 	public static <T extends ElementsResponse> List<ElementsOptional<T>> readPredicted(JsonReader reader, Class<T> response) throws IOException {
 		List<ElementsOptional<T>> stream = findPredicted(response).stream()
@@ -93,7 +92,6 @@ public abstract class ElementsReaderHandler {
 	 * 
 	 * @return Any ElementReaders that return with the offering class ElementsResponse. As a stream, the mapped return is the ElementsResponse.
 	 * @throws IOException 
-	 * @throws Exception 
 	 */
 	public static <T extends ElementsResponse> Stream<ElementsOptional<T>> streamPredicted(JsonReader reader, Class<T> predicted) throws IOException {
 		return readPredicted(reader, predicted).stream();
