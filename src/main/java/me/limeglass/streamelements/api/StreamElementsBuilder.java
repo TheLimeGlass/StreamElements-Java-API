@@ -7,6 +7,7 @@ public final class StreamElementsBuilder {
 
 	private String token, accountID;
 	private int timeout = 20 * 1000;
+	private Class<?>[] listeners;
 	
 	/**
 	 * For those whom love keeping clean methods per line.
@@ -25,6 +26,16 @@ public final class StreamElementsBuilder {
 	public StreamElementsBuilder(String token, String accountID) {
 		this.accountID = accountID;
 		this.token = token;
+	}
+	
+	/**
+	 * Register any listeners.
+	 * If a method contains 1 parameter of an ElementsEvent and has the @EventListener annotation,
+	 * it will be called when an event happens.
+	 */
+	public StreamElementsBuilder registerListeners(Class<?>... listeners) {
+		this.listeners = listeners;
+		return this;
 	}
 	
 	/**
@@ -51,14 +62,23 @@ public final class StreamElementsBuilder {
 		this.token = token;
 		return this;
 	}
-
+	
 	/**
-	 * @return The timeout defined by the client.
+	 * NOTE: These classes aren't registered until the build method has been triggered.
+	 * 
+	 * @return The classes that have been scanned and registered listeners for.
 	 */
-	public int getTimeout() {
-		return timeout;
+	public Class<?>[] getListeners() {
+		return listeners;
 	}
 	
+	/**
+	 * @return The StreamElements Account ID of the client.
+	 */
+	public String getAccountID() {
+		return accountID;
+	}
+
 	/**
 	 * @return The StreamElements JWT token of the client.
 	 */
@@ -67,16 +87,17 @@ public final class StreamElementsBuilder {
 	}
 	
 	/**
-	 * @return the StreamElements Account ID of the client.
+	 * @return The timeout defined by the client.
 	 */
-	public String getAccountID() {
-		return accountID;
+	public int getTimeout() {
+		return timeout;
 	}
 	
 	//TODO
 	public StreamElements build() {
-		if (token == null || accountID == null) throw new StreamElementsException("The StreamElements token or account ID was not set!");
-		return new StreamElementsClient(token, accountID, timeout);
+		if (token == null || accountID == null)
+			throw new StreamElementsException("The StreamElements token or account ID was not set!");
+		return new StreamElementsClient(token, accountID, timeout, listeners);
 	}
 
 }

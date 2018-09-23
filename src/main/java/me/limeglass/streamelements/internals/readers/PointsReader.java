@@ -88,7 +88,6 @@ public class PointsReader extends ElementsReader<PointsResponse> {
 				return new ElementsOptional<PointsResponse>(e);
 			}
 		}
-		//TODO HttpMethod DELETE
 		return new ElementsOptional<PointsResponse>();
 	}
 

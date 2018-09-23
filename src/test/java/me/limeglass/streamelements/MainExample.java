@@ -24,6 +24,7 @@ public class MainExample {
 		//instance = new StreamElementsBuilder(config.getString("client.account"), config.getString("client.token")).build();
 		instance = new StreamElementsBuilder()
 				.withAccountID(config.getString("client.account"))
+				.registerListeners(EventListenerExample.class)
 				.withToken(config.getString("client.token"))
 				.withConnectionTimeout(10000)
 				.build();

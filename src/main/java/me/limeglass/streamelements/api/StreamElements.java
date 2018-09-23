@@ -38,6 +38,14 @@ public interface StreamElements {
 	/**
 	 * May only be a positive number.
 	 * 
+	 * @param points The amount of current points to set.
+	 * @param existing An existing Points instance.
+	 */
+	void setCurrentUserPoints(long points, Points... existing);
+	
+	/**
+	 * May only be a positive number.
+	 * 
 	 * @param username The username to set points of.
 	 * @param points The amount of current points to set.
 	 */
@@ -76,6 +84,13 @@ public interface StreamElements {
 	void addPoints(User user, long points);
 	
 	/**
+	 * Removes a user from the points system.
+	 * 
+	 * @param user The User to set points of.
+	 */
+	void removeUserPoints(User user);
+	
+	/**
 	 * @param username The username to get points from.
 	 * @return The points of a user by string username.
 	 */
@@ -86,5 +101,15 @@ public interface StreamElements {
 	 * @return The points of a user.
 	 */
 	Points getUserPoints(User user);
+	
+	/**
+	 * Resets all the current points.
+	 */
+	void resetCurrentPoints();
+	
+	/**
+	 * Resets the all-time points.
+	 */
+	void resetAllPoints();
 	
 }

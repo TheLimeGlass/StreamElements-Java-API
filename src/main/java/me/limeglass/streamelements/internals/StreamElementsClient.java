@@ -4,10 +4,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.socket.client.Socket;
 import me.limeglass.streamelements.api.StreamElements;
 import me.limeglass.streamelements.api.objects.Activity;
 import me.limeglass.streamelements.api.objects.Points;
 import me.limeglass.streamelements.api.objects.User;
+import me.limeglass.streamelements.internals.events.EventDispatcher;
+import me.limeglass.streamelements.internals.events.SocketListener;
 import me.limeglass.streamelements.internals.handlers.ElementsReaderHandler;
 import me.limeglass.streamelements.internals.handlers.ElementsRequest;
 import me.limeglass.streamelements.internals.handlers.ElementsRequest.HttpMethod;
@@ -17,7 +20,9 @@ import me.limeglass.streamelements.internals.responses.PointsResponse;
 public class StreamElementsClient implements StreamElements {
 	
 	private final String token, account;
+	private Class<?>[] listeners;
 	private final int timeout;
+	private Socket socket;
 	
 	/**
 	 * The StreamElements client Constructor
@@ -25,11 +30,21 @@ public class StreamElementsClient implements StreamElements {
 	 * @param token The JWT token used from StreamElements. (Found under account)
 	 * @param accountID The account ID used from StreamElements. (Found under account)
 	 */
-	public StreamElementsClient(String token, String account, int timeout) {
+	public StreamElementsClient(String token, String account, int timeout, Class<?>[] listeners) {
 		ElementsReaderHandler.load("me.limeglass.streamelements.internals.readers");
+		if (listeners != null && listeners.length > 0)
+			this.listeners = EventDispatcher.registerListeners(listeners);
+		this.socket = SocketListener.registerSocket(this);
 		this.account = account;
 		this.timeout = timeout;
 		this.token = token;
+	}
+	
+	/**
+	 * @return The classes that have been scanned and registered listeners for.
+	 */
+	public Class<?>[] getListeners() {
+		return listeners;
 	}
 
 	/**
@@ -38,6 +53,13 @@ public class StreamElementsClient implements StreamElements {
 	@Override
 	public String getAccountID() {
 		return account;
+	}
+	
+	/**
+	 * @return The Socket.IO for realtime.streamelements.com
+	 */
+	public Socket getSocket() {
+		return socket;
 	}
 	
 	/**
@@ -91,6 +113,11 @@ public class StreamElementsClient implements StreamElements {
 		String update = "/" + (current >= points ? "-" + (current - points) : points - current);
 		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.PUT, ElementsEndpoints.POINTS + account + "/" + username + update);
 	}
+	
+	@Override
+	public void setCurrentUserPoints(long points, Points... existing) {
+		for (Points user : existing) setCurrentUserPoints(user.getUser(), points);
+	}
 
 	@Override
 	public void setCurrentUserPoints(User user, long points) {
@@ -115,6 +142,21 @@ public class StreamElementsClient implements StreamElements {
 	@Override
 	public void addPoints(User user, long points) {
 		addPoints(user.getName(), points);
+	}
+
+	@Override
+	public void removeUserPoints(User user) {
+		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.DELETE, ElementsEndpoints.POINTS + account + "/" + user.getName());
+	}
+
+	@Override
+	public void resetCurrentPoints() {
+		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.DELETE, ElementsEndpoints.POINTS + account + "/reset/current");
+	}
+
+	@Override
+	public void resetAllPoints() {
+		ElementsRequest.makeRequest(this, PointsResponse.class, HttpMethod.DELETE, ElementsEndpoints.POINTS + account + "/reset/alltime");
 	}
 
 }
