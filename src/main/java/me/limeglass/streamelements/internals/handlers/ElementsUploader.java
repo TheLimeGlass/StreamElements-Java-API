@@ -4,6 +4,7 @@ import java.io.OutputStreamWriter;
 import java.util.stream.Stream;
 
 import me.limeglass.streamelements.internals.ElementsOptional;
+import me.limeglass.streamelements.internals.dummy.ElementsResponse;
 import me.limeglass.streamelements.internals.handlers.ElementsRequest.HttpMethod;
 
 public class ElementsUploader extends ElementsReaderHandler {

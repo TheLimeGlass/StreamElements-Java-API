@@ -35,17 +35,25 @@ public abstract class EventEmitter extends ElementsEmitter {
 		}
 	}
 	*/
+	
+	@Override
+	public String getEventName() {
+		return type;
+	}
 
 	@Override
 	public void call(Socket socket, Object... args) {
 		JSONObject object = (JSONObject)args[0];
-		System.out.println("Event: " + object.toString());
-		provider = object.getString("provider");
+		if (object.has("provider"))
+			provider = object.getString("provider");
+		else 
+			provider = "twitch";
 		instant = Instant.parse(object.getString("createdAt"));
 		channel = object.getString("channel");
-		System.out.println("Event: " + object.toString());
-		if (object.getString("type").equalsIgnoreCase(type))
+		if (object.has("type") && object.getString("type").equalsIgnoreCase(type))
 			call(socket, object.getJSONObject("data"));
+		else if (object.has("redeemerType") && type.equalsIgnoreCase("redemption"))
+			call(socket, object);
 	}
 	
 	protected abstract void call(Socket socket, JSONObject data);

@@ -1,7 +1,7 @@
 package me.limeglass.streamelements.internals.responses;
 
 import me.limeglass.streamelements.api.objects.Points;
-import me.limeglass.streamelements.internals.handlers.ElementsResponse;
+import me.limeglass.streamelements.internals.dummy.ElementsResponse;
 
 public class PointsResponse extends ElementsResponse {
 	

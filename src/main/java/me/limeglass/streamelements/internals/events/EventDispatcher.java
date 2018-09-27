@@ -56,18 +56,19 @@ public class EventDispatcher {
 	 * Used internally, call this when an event happens to trigger the API events.
 	 * 
 	 * @param event The ElementsEvent that just happened.
+	 * @return 
 	 */
-	public static void dispatch(ElementsEvent event) {
-		registered.parallelStream()
-				.filter(check -> check.accepts(event))
-				.forEach(handler -> {
-					try {
-						handler.handle(event);
-					} catch (Throwable e) {
-						System.out.println("Error dispatching event " + event.getClass().getSimpleName());
-						e.printStackTrace();
-					}
-				});
+	public static ElementsEvent dispatch(ElementsEvent event) {
+		for (MethodHandler handler : registered) {
+			if (handler.accepts(event))
+				try {
+					return handler.handle(event);
+				} catch (Throwable e) {
+					System.out.println("Error dispatching event " + event.getClass().getSimpleName());
+					e.printStackTrace();
+				}
+		}
+		return event;
 	}
 	
 	/**
@@ -86,13 +87,14 @@ public class EventDispatcher {
 			this.handle = handle;
 		}
 
-		public void handle(ElementsEvent event) throws Throwable {
+		public ElementsEvent handle(ElementsEvent event) throws Throwable {
 			Constructor<?>[] constructors = listenerClass.getConstructors();
 			if (constructors.length > 0 && constructors[0].getParameterCount() > 0 && listener == null)
 				throw new IllegalArgumentException("The listener instance may not be null and have a constructor at the same time.\n Use registerListener(Listener.class, new SubClassListener())");
 			if (listener == null)
 				listener = listenerClass.newInstance();
 			handle.invoke(listener, event);
+			return event;
 		};
 		
 		public boolean accepts(ElementsEvent event) {

@@ -14,6 +14,7 @@ import com.google.gson.stream.JsonReader;
 
 import me.limeglass.streamelements.api.StreamElements;
 import me.limeglass.streamelements.internals.ElementsOptional;
+import me.limeglass.streamelements.internals.dummy.ElementsResponse;
 
 public class ElementsRequest {
 

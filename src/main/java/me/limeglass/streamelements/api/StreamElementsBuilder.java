@@ -8,6 +8,7 @@ public final class StreamElementsBuilder {
 	private String token, accountID;
 	private int timeout = 20 * 1000;
 	private Class<?>[] listeners;
+	private String[] emitters;
 	
 	/**
 	 * For those whom love keeping clean methods per line.
@@ -35,6 +36,15 @@ public final class StreamElementsBuilder {
 	 */
 	public StreamElementsBuilder registerListeners(Class<?>... listeners) {
 		this.listeners = listeners;
+		return this;
+	}
+	
+	/**
+	 * Register any emitters you want.
+	 * The parameter string is the class path of the emitter. Example: me.limeglass.streamelements.internal.events.emitters
+	 */
+	public StreamElementsBuilder registerEmitters(String... emitters) {
+		this.emitters = emitters;
 		return this;
 	}
 	
@@ -97,7 +107,7 @@ public final class StreamElementsBuilder {
 	public StreamElements build() {
 		if (token == null || accountID == null)
 			throw new StreamElementsException("The StreamElements token or account ID was not set!");
-		return new StreamElementsClient(token, accountID, timeout, listeners);
+		return new StreamElementsClient(token, accountID, timeout, listeners, emitters);
 	}
 
 }

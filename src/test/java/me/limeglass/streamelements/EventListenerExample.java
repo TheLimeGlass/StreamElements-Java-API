@@ -6,6 +6,7 @@ import me.limeglass.streamelements.api.events.ConnectEvent;
 import me.limeglass.streamelements.api.events.ConnectingEvent;
 import me.limeglass.streamelements.api.events.FollowEvent;
 import me.limeglass.streamelements.api.events.HostEvent;
+import me.limeglass.streamelements.api.events.RedemptionEvent;
 
 public class EventListenerExample {
 	
@@ -37,6 +38,11 @@ public class EventListenerExample {
 	@EventListener
 	public void onFollow(FollowEvent event) {
 		System.out.println("User " + event.getUser().getName() + " has just followed at " + event.getInstant());
+	}
+	
+	@EventListener
+	public void onRedemption(RedemptionEvent event) {
+		System.out.println(event.getRedeemer().getUser().getName() + " just redeemed " + event.getItem().getName() + " at " + event.getInstant() + " for " + event.getItem().getCost());
 	}
 	
 }

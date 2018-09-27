@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import com.google.gson.stream.JsonReader;
 
 import me.limeglass.streamelements.internals.ElementsOptional;
+import me.limeglass.streamelements.internals.dummy.ElementsResponse;
 import me.limeglass.streamelements.internals.handlers.ElementsRequest.HttpMethod;
 
 public abstract class ElementsReader<T extends ElementsResponse> {

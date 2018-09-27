@@ -21,6 +21,7 @@ public class StreamElementsClient implements StreamElements {
 	
 	private final String token, account;
 	private Class<?>[] listeners;
+	private String[] emitters;
 	private final int timeout;
 	private Socket socket;
 	
@@ -30,10 +31,13 @@ public class StreamElementsClient implements StreamElements {
 	 * @param token The JWT token used from StreamElements. (Found under account)
 	 * @param accountID The account ID used from StreamElements. (Found under account)
 	 */
-	public StreamElementsClient(String token, String account, int timeout, Class<?>[] listeners) {
+	public StreamElementsClient(String token, String account, int timeout, Class<?>[] listeners, String... emitters) {
 		ElementsReaderHandler.load("me.limeglass.streamelements.internals.readers");
 		if (listeners != null && listeners.length > 0)
 			this.listeners = EventDispatcher.registerListeners(listeners);
+		SocketListener.registerEmitters(this, "me.limeglass.streamelements.events.emitters.types");
+		if (emitters != null && emitters.length > 0)
+			this.emitters = SocketListener.registerEmitters(this, emitters);
 		this.socket = SocketListener.registerSocket(this);
 		this.account = account;
 		this.timeout = timeout;
@@ -45,6 +49,13 @@ public class StreamElementsClient implements StreamElements {
 	 */
 	public Class<?>[] getListeners() {
 		return listeners;
+	}
+	
+	/**
+	 * @return The emitters to be registered.
+	 */
+	public String[] getEmitters() {
+		return emitters;
 	}
 
 	/**
