@@ -19,7 +19,7 @@ public class RedemptionEmitter extends EventEmitter {
 	protected void call(Socket socket, JSONObject data) {
 		long amount = data.getLong("amount");
 		String avatar = data.getString("avatar");
-		String username = data.getString("name");
+		String username = data.getString("username");
 		String redemption = data.getString("redemption");
 		User user = new UserImp(username, avatar);
 		RedemptionEvent event = new RedemptionEvent(type, instant, provider, channel, amount, redemption, user);
