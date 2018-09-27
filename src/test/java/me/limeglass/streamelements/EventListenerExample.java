@@ -31,7 +31,7 @@ public class EventListenerExample {
 	
 	@EventListener
 	public void onHost(HostEvent event) {
-		System.out.println("Host from " + " USER " + " at " + event.getInstant().toString());
+		System.out.println("Host from " + event.getUser().getName() + " at " + event.getInstant() + " with " + event.getViewerCount() + " viewers!");
 	}
 	
 	@EventListener

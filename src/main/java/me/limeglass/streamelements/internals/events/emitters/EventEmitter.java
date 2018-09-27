@@ -41,6 +41,7 @@ public abstract class EventEmitter extends ElementsEmitter {
 	@Override
 	public void call(Socket socket, Object... args) {
 		JSONObject object = (JSONObject)args[0];
+		System.out.println("Event: " + object.toString());
 		provider = object.getString("provider");
 		instant = Instant.parse(object.getString("createdAt"));
 		channel = new ChannelImp(Long.parseLong(object.getString("channel")));
