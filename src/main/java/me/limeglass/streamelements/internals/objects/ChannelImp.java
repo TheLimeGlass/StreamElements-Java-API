@@ -5,8 +5,12 @@ import me.limeglass.streamelements.api.objects.User;
 
 public class ChannelImp implements Channel {
 
-	private final User owner;
 	private final long ID;
+	private User owner;
+	
+	public ChannelImp(long ID) {
+		this.ID = ID;
+	}
 	
 	public ChannelImp(User owner, long ID) {
 		this.owner = owner;

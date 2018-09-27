@@ -7,56 +7,60 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 
+import com.google.common.collect.Sets;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter.Listener;
 import me.limeglass.streamelements.api.StreamElements;
+import me.limeglass.streamelements.internals.events.emitters.ElementsEmitter;
+import me.limeglass.streamelements.internals.events.emitters.EventEmitter;
 
 public class SocketListener {
 
 	private static Set<ElementsEmitter> emitters = new HashSet<ElementsEmitter>();
+	private static Set<Class<?>> ignored = Sets.newHashSet(EventEmitter.class);
 	private static Socket socket;
 	
 	public static Socket registerSocket(StreamElements instance) {
 		try {
-			IO.Options options = new IO.Options();
-			options.forceNew = true;
-			options.reconnection = false;
 			Reflections reflections = new Reflections("me.limeglass.streamelements.internals.events.emitters");
 			for (Class<? extends ElementsEmitter> emitterClass : reflections.getSubTypesOf(ElementsEmitter.class)) {
 				ElementsEmitter emitter;
 				try {
 					emitter = emitterClass.getDeclaredConstructor(StreamElements.class).newInstance(instance);
 				} catch (NoSuchMethodException e) {
+					if (ignored.contains(emitterClass))
+						continue;
 					emitter = emitterClass.newInstance();
 				}
 				emitters.add(emitter);
 			}
+			IO.Options options = new IO.Options();
+			options.forceNew = true;
+			options.reconnection = true;
+			options.transports = new String[] {"websocket"};
 			socket = IO.socket("https://realtime.streamelements.com", options);
 			for (ElementsEmitter emitter : emitters) {
-				socket.on(emitter.getEventName(), emitter);
+				if (emitter.isManagerInjection()) socket.io().on(emitter.getEventName(), emitter);
+				else socket.on(emitter.getEventName(), emitter);
 			}
-			socket.connect();
-			return socket;
+			return socket.connect();
 		} catch (URISyntaxException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public static abstract class ElementsEmitter implements Listener {
-		
-		protected Socket socket = SocketListener.socket;
-		protected String event;
-		
-		public ElementsEmitter(String event) {
-			this.event = event;
-		}
-		
-		public String getEventName() {
-			return event;
-		}
-		
+	public static Socket getSocket() {
+		return socket;
+	}
+	
+	/**
+	 * Useful for adding emitters that shouldn't be read as a logical ElementsEmitter. Example being EventEmitter.
+	 * @param emitter The class that extends ElementsEmitter.
+	 */
+	public static <T extends ElementsEmitter> void addIgnored(Class<T> emitter) {
+		ignored.add(emitter);
 	}
 	
 }
