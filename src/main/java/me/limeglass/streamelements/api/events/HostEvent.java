@@ -2,7 +2,6 @@ package me.limeglass.streamelements.api.events;
 
 import java.time.Instant;
 
-import me.limeglass.streamelements.api.objects.Channel;
 import me.limeglass.streamelements.api.objects.User;
 
 public class HostEvent extends ActivityEvent {
@@ -13,7 +12,7 @@ public class HostEvent extends ActivityEvent {
 	/**
 	 * Called when someone hosts.
 	 */
-	public HostEvent(String type, Instant instant, String provider, Channel channel, Number viewers, User user) {
+	public HostEvent(String type, Instant instant, String provider, String channel, Number viewers, User user) {
 		super(type, instant, provider, channel);
 		this.viewers = viewers;
 		this.user = user;

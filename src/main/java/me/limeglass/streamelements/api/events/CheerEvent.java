@@ -2,7 +2,6 @@ package me.limeglass.streamelements.api.events;
 
 import java.time.Instant;
 
-import me.limeglass.streamelements.api.objects.Channel;
 import me.limeglass.streamelements.api.objects.User;
 
 public class CheerEvent extends ActivityEvent {
@@ -14,7 +13,7 @@ public class CheerEvent extends ActivityEvent {
 	/**
 	 * Called when someone cheers.
 	 */
-	public CheerEvent(String type, Instant instant, String provider, Channel channel, Number amount, User user, String message) {
+	public CheerEvent(String type, Instant instant, String provider, String channel, Number amount, User user, String message) {
 		super(type, instant, provider, channel);
 		this.message = message;
 		this.amount = amount;

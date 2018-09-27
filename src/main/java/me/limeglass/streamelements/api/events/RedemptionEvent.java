@@ -2,7 +2,6 @@ package me.limeglass.streamelements.api.events;
 
 import java.time.Instant;
 
-import me.limeglass.streamelements.api.objects.Channel;
 import me.limeglass.streamelements.api.objects.User;
 
 public class RedemptionEvent extends ActivityEvent {
@@ -14,7 +13,7 @@ public class RedemptionEvent extends ActivityEvent {
 	/**
 	 * Called when someone uses a redemption.
 	 */
-	public RedemptionEvent(String type, Instant instant, String provider, Channel channel, Number amount, String redemption, User user) {
+	public RedemptionEvent(String type, Instant instant, String provider, String channel, Number amount, String redemption, User user) {
 		super(type, instant, provider, channel);
 		this.redemption = redemption;
 		this.amount = amount;

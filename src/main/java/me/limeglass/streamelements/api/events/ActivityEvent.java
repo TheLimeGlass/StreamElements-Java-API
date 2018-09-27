@@ -2,19 +2,18 @@ package me.limeglass.streamelements.api.events;
 
 import java.time.Instant;
 
-import me.limeglass.streamelements.api.objects.Channel;
 import me.limeglass.streamelements.internals.events.ElementsEvent;
 
 public class ActivityEvent extends ElementsEvent {
 
 	private final String provider, type;
 	private final Instant instant;
-	private final Channel channel;
+	private final String channel;
 	
 	/**
 	 * Called when an Activity happens.
 	 */
-	public ActivityEvent(String type, Instant instant, String provider, Channel channel) {
+	public ActivityEvent(String type, Instant instant, String provider, String channel) {
 		this.provider = provider;
 		this.channel = channel;
 		this.instant = instant;
@@ -29,9 +28,9 @@ public class ActivityEvent extends ElementsEvent {
 	}
 	
 	/**
-	 * @return The Channel where the Activity came from.
+	 * @return The Channel ID where the Activity came from.
 	 */
-	public Channel getChannel() {
+	public String getChannel() {
 		return channel;
 	}
 	

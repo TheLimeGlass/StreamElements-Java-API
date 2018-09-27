@@ -2,7 +2,6 @@ package me.limeglass.streamelements.api.events;
 
 import java.time.Instant;
 
-import me.limeglass.streamelements.api.objects.Channel;
 import me.limeglass.streamelements.api.objects.User;
 
 public class TipEvent extends ActivityEvent {
@@ -14,7 +13,7 @@ public class TipEvent extends ActivityEvent {
 	/**
 	 * Called when someone Donates/Tips.
 	 */
-	public TipEvent(String type, Instant instant, String provider, Channel channel, Number amount, String tipID, String currency, String message, User user) {
+	public TipEvent(String type, Instant instant, String provider, String channel, Number amount, String tipID, String currency, String message, User user) {
 		super(type, instant, provider, channel);
 		this.currency = currency;
 		this.message = message;

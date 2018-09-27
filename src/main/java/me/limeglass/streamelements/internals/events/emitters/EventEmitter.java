@@ -5,14 +5,12 @@ import java.time.Instant;
 import org.json.JSONObject;
 
 import io.socket.client.Socket;
-import me.limeglass.streamelements.api.objects.Channel;
-import me.limeglass.streamelements.internals.objects.ChannelImp;
 
 public abstract class EventEmitter extends ElementsEmitter {
 	
 	protected String type, provider;
 	protected Instant instant;
-	protected Channel channel;
+	protected String channel;
 	
 	public EventEmitter(String type) {
 		super("event");
@@ -44,7 +42,7 @@ public abstract class EventEmitter extends ElementsEmitter {
 		System.out.println("Event: " + object.toString());
 		provider = object.getString("provider");
 		instant = Instant.parse(object.getString("createdAt"));
-		channel = new ChannelImp(Long.parseLong(object.getString("channel")));
+		channel = object.getString("channel");
 		System.out.println("Event: " + object.toString());
 		if (object.getString("type").equalsIgnoreCase(type))
 			call(socket, object.getJSONObject("data"));

@@ -2,7 +2,6 @@ package me.limeglass.streamelements.api.events;
 
 import java.time.Instant;
 
-import me.limeglass.streamelements.api.objects.Channel;
 import me.limeglass.streamelements.api.objects.User;
 
 public class SubscriberEvent extends ActivityEvent {
@@ -16,7 +15,7 @@ public class SubscriberEvent extends ActivityEvent {
 	/**
 	 * Called when someone subscribes.
 	 */
-	public SubscriberEvent(String type, Instant instant, String provider, Channel channel, Number amount, long tier, boolean gifted, User sender, String message, User user) {
+	public SubscriberEvent(String type, Instant instant, String provider, String channel, Number amount, long tier, boolean gifted, User sender, String message, User user) {
 		super(type, instant, provider, channel);
 		this.message = message;
 		this.amount = amount;
