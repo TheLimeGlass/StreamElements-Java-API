@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.github.TheLimeGlass:StreamElements-Java-API:Alpha-3'
+  compile 'com.github.TheLimeGlass:StreamElements-Java-API:Beta-1'
 }
 ```
 Check the link above for SBT and leiningen support.
