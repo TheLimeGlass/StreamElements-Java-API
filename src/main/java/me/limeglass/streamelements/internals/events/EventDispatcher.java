@@ -59,6 +59,7 @@ public class EventDispatcher {
 	 * @return 
 	 */
 	public static ElementsEvent dispatch(ElementsEvent event) {
+		//TODO make this section cancellable
 		for (MethodHandler handler : registered) {
 			if (handler.accepts(event))
 				try {
@@ -93,7 +94,7 @@ public class EventDispatcher {
 				throw new IllegalArgumentException("The listener instance may not be null and have a constructor at the same time.\n Use registerListener(Listener.class, new SubClassListener())");
 			if (listener == null)
 				listener = listenerClass.newInstance();
-			handle.invoke(listener, event);
+			handle.invoke(event);
 			return event;
 		};
 		

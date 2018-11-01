@@ -40,4 +40,9 @@ public class EmitterRegisterEvent extends ElementsEvent implements Cancellable {
 		return cancelled;
 	}
 	
+	@Override
+	public String getName() {
+		return "EmitterRegister: " + emitter.getEventName();
+	}
+	
 }

@@ -9,4 +9,9 @@ public class ReconnectEvent extends ElementsEvent {
 	 */
 	public ReconnectEvent() {}
 	
+	@Override
+	public String getName() {
+		return "Reconnect";
+	}
+	
 }

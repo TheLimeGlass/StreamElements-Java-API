@@ -30,7 +30,7 @@ public class RedemptionEvent extends ActivityEvent {
 	}
 	
 	/**
-	 * @return The redeemer type of the redemption event.
+	 * @return The redeemer type of the redemption event. This is not the name of the Redeemed item!
 	 */
 	public String getRedeemerType() {
 		return redeemerType;

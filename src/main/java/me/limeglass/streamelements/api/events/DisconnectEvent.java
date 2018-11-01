@@ -9,4 +9,9 @@ public class DisconnectEvent extends ElementsEvent {
 	 */
 	public DisconnectEvent() {}
 	
+	@Override
+	public String getName() {
+		return "Disconnect";
+	}
+	
 }

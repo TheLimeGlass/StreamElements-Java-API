@@ -36,4 +36,9 @@ public class AuthenticatedEvent extends ElementsEvent {
 		return message;
 	}
 	
+	@Override
+	public String getName() {
+		return "Authenticated";
+	}
+	
 }

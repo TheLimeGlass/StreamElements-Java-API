@@ -51,9 +51,9 @@ public abstract class EventEmitter extends ElementsEmitter {
 		instant = Instant.parse(object.getString("createdAt"));
 		channel = object.getString("channel");
 		if (object.has("type") && object.getString("type").equalsIgnoreCase(type))
-			call(socket, object.getJSONObject("data"));
+			this.call(socket, object.getJSONObject("data"));
 		else if (object.has("redeemerType") && type.equalsIgnoreCase("redemption"))
-			call(socket, object);
+			this.call(socket, object);
 	}
 	
 	protected abstract void call(Socket socket, JSONObject data);

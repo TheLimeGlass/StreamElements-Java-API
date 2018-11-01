@@ -59,7 +59,7 @@ public class RedemptionEmitter extends EventEmitter {
 		JSONObject alert = item.getJSONObject("alert");
 		int duration = alert.getJSONObject("graphics").getInt("duration");
 		JSONObject audio = alert.getJSONObject("audio");
-		Number volume = audio.getNumber("volume");
+		Number volume = audio.getInt("volume");
 		String src = audio.getString("src");
 		boolean enabled = alert.getBoolean("enabled");
 		EventAlert eventAlert = new EventAlert(duration, volume, src, enabled);

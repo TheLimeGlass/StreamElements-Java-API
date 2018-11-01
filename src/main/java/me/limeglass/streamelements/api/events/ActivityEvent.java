@@ -47,5 +47,10 @@ public class ActivityEvent extends ElementsEvent {
 	public String getType() {
 		return type;
 	}
+
+	@Override
+	public String getName() {
+		return "Activity";
+	}
 	
 }

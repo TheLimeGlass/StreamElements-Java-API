@@ -9,4 +9,9 @@ public class ConnectingEvent extends ElementsEvent {
 	 */
 	public ConnectingEvent() {}
 	
+	@Override
+	public String getName() {
+		return "Connecting";
+	}
+	
 }
