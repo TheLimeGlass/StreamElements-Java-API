@@ -20,7 +20,7 @@ In your `pom.xml` add:
 <dependency>
     <groupId>com.github.TheLimeGlass</groupId>
     <artifactId>StreamElements-Java-API</artifactId>
-    <version>ALPHA</version>
+    <version>Alpha-3</version>
 </dependency>
 
 ```
@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.github.TheLimeGlass:StreamElements-Java-API:ALPHA'
+  compile 'com.github.TheLimeGlass:StreamElements-Java-API:Alpha-3'
 }
 ```
 Check the link above for SBT and leiningen support.
