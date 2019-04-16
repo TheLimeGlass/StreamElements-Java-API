@@ -20,7 +20,7 @@ In your `pom.xml` add:
 <dependency>
     <groupId>com.github.TheLimeGlass</groupId>
     <artifactId>StreamElements-Java-API</artifactId>
-    <version>Alpha-3</version>
+    <version>Beta-1</version>
 </dependency>
 
 ```
