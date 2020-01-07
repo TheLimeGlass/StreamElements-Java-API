@@ -27,7 +27,7 @@ dependencies {
 	}
 	
 	// Configurations
-	testCompile 'org.apache.commons:commons-configuration2:2.2'
+	testCompile 'org.apache.commons:commons-configuration2:2.6'
 	testCompile 'org.apache.commons:commons-lang3:3.9'
 	testCompile 'commons-logging:commons-logging:1.2'
 	testCompile 'commons-beanutils:commons-beanutils:1.9.4'
