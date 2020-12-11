@@ -22,7 +22,7 @@ dependencies {
 	compile (group: 'org.json', name: 'json', version: '20180813')
 	
 	//Socket.IO
-	compile ('io.socket:socket.io-client:1.0.0') {
+	compile ('io.socket:socket.io-client:1.0.1') {
 		exclude group: 'org.json', module: 'json'
 	}
 	
