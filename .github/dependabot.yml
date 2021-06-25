@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.json:json
+    versions:
+    - "20201115"
+  - dependency-name: org.apache.commons:commons-lang3
+    versions:
+    - "3.11"
